@@ -2,6 +2,7 @@ window.App = {};
 
 $(function() {
 	var todos = new App.Todos();
+	todos.fetch();
 
 	var createFormView  = new App.CreateFormView({
 		el: '.kurekureForm',
@@ -13,18 +14,45 @@ $(function() {
 		collection: todos
 	});
 
-
-	// todos.on('add', function(model) {
-	// 	$('.count').html(todos.length + '個欲しいのがあるよ！');
-
-	// 	var $li = $('<li>').html(
-	// 		model.get('kurekure')
-	// 	);
-
-	// 	$('.list').append($li);
-	// });
+	var User = Backbone.Model.extend({
+		defaults: {
+			'name' : '',
+			'age' : 0
+		}
+	});
 
 	todos.on('invalid', function(model, message) {
 		alert(message);
 	});
+
+
+	//ダミーデータ
+	todos.add({
+		kurekure: 'ああああああああ'
+	}, { validate: true })
+
+	//test
+	var Users = Backbone.Collection.extend({
+		model: User,
+		url: 'data.json'
+	});
+
+	var UserView = Backbone.View.extend({
+		el: $('#view'),
+		initialize: function(){
+			this.collection = new Users();
+			this.collection.fetch({
+				error: $.proxy(this.error, this),
+				success: $.proxy(this.render, this)
+			});
+		},
+		render: function(){
+			_(this.collection.models).each(function(item){
+					
+			}, this);
+		}
+	});
+
+
+
 });

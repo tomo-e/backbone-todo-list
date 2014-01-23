@@ -418,10 +418,23 @@ ul {
  * app **
 ---------------------------------------- */
 
-.list li {
+.todoList li:first-of-type {
+  border-top: 1px solid #e56;
+}
+
+.todoList li {
   padding: 5px 10px;
   background: #e98;
-  border: 1px solid #e56;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #e56;
 }
+
+.remove {
+  cursor: pointer;
+  color: #FFF;
+  background: #D00;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
 

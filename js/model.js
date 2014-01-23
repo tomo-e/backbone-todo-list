@@ -10,5 +10,6 @@ App.Todo = Backbone.Model.extend({
 });
 
 App.Todos = Backbone.Collection.extend({
-	model: App.Todo
+	model: App.Todo,
+	localStorage: new Backbone.LocalStorage('todoList')
 });
