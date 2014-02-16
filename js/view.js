@@ -1,66 +1,60 @@
+//テンプレートに処理をいれる、modelを削除する
+var TodoView = Parse.View.extend({
+      tagName: "li",
+      template: _.template('<%= title %>' + '<span class="remove">delete</span>'),
 
+      events: {
+      	'click .remove': 'onRemove'
+      },
 
+      initialize: function() {
+      	this.render();
+      },
 
-App.CreateFormView = Backbone.View.extend({
-  events: {
-    'submit': 'onSubmit'
-  },
-  onSubmit: function(e) {
-    e.preventDefault();
+      render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+      },
 
-    var kurekure = this.$('input[name="kurekure"]').val();
-
-    this.collection.create({
-      kurekure: kurekure
-    }, { validate: true });
-  }
+      onRemove: function() {
+      	this.model.destroy();
+      }
 });
 
-App.ListView = Backbone.View.extend({
+//Parseの値を表示させる
+var TodoListView = Parse.View.extend({
 	initialize: function() {
 		this.render();
-		this.listenTo(this.collection, 'add remove', this.render);
-	},
-	render: function(){
-		// var $ul = this.$('ul');
-		// $ul.empty();
-
-		var $list = this.$('ul').empty();
-
-		this.collection.each(function(model) {
-			var item = new App.ListTodoView ({ model: model });
-			$list.append(item.el);
-			// var text = model.get('kurekure');
-			// $ul.append('<li>' + text);
-		}, this);
-	}
-});
-
-App.ListTodoView = Backbone.View.extend({
-	tagName: 'li',
-
-	template: '<%= kurekure %>' + '<span class="remove">削除</span>',
-
-	events: {
-		'click .remove': 'onRemove'
-	},
-
-	initialize: function() {
-		this.render();
+		this.collection.on("add", this.render, this);
 	},
 	render: function() {
-		var html = _.template(this.template, {
-			kurekure: this.model.get('kurekure')
-		});
-
-		this.$el.html(html);
-	},
-
-	onRemove: function() {
-		this.model.destroy();
+        this.$el.html("");
+        this.collection.each(function(todo) {
+          var todoView = new TodoView({model:todo});
+          this.$el.append(todoView.render().el);
+        },this);
+        return this;
 	}
 });
 
-
-
-
+//投稿フォームの値をParseに入力
+var appCreateFormView = Parse.View.extend({
+	events: {
+		'submit': 'onSubmit'
+	},
+	onSubmit: function(e) {
+		e.preventDefault();
+        var todo = new Todo();
+        todo.on('error', function(model, error) {$('#error').html(error);});
+        todo.set({title : $('#title').val()})
+        if(todo.isValid()) {
+          $('#error').html('');
+          todo.save(null, {
+            success: _.bind(function(todo) {
+              this.collection.add(todo);
+              $('#title').val('');
+            }, this)
+          });
+        };
+	}
+});

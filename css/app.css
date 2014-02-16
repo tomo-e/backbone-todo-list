@@ -422,7 +422,7 @@ ul {
   border-top: 1px solid #e56;
 }
 
-.todoList li {
+#todo-list li {
   padding: 5px 10px;
   background: #e98;
   border-bottom: 1px solid #e56;

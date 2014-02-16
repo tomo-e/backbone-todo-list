@@ -1,15 +1,10 @@
-App.Todo = Backbone.Model.extend({
-	defaults: {
-		kurekure: null,
-	},
-	validate: function(attrs) {
-		if(!attrs.kurekure) {
-			return 'おみやげ名は必須です';
-		}
-	}
+var Todo = Parse.Object.extend({
+      className:"Todo",
+      validate: function(attrs){
+        if(_.isEmpty(attrs.title)){
+          return "おみやげ名は必須です";
+        }
+      }
 });
 
-App.Todos = Backbone.Collection.extend({
-	model: App.Todo,
-	localStorage: new Backbone.LocalStorage('todoList')
-});
+var TodoList = Parse.Collection.extend({ model: Todo });

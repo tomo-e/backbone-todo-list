@@ -1,58 +1,31 @@
-window.App = {};
+Parse.initialize("XXXXXXXXXXXXXXXXXXXX", "XXXXXXXXXXXXXXXXXXXX");
 
-$(function() {
-	var todos = new App.Todos();
-	todos.fetch();
+var AppView = Parse.View.extend({
+	initialize: function(){
+		 new Parse.Query("Todo").find({
+          success: _.bind(function(list){
 
-	var createFormView  = new App.CreateFormView({
-		el: '.kurekureForm',
-		collection: todos
-	});
+            var todoList = new TodoList(list);
 
-	var listView = new App.ListView({
-		el: '.todoList',
-		collection: todos
-	});
-
-	var User = Backbone.Model.extend({
-		defaults: {
-			'name' : '',
-			'age' : 0
-		}
-	});
-
-	todos.on('invalid', function(model, message) {
-		alert(message);
-	});
+            var createFormView = new appCreateFormView({
+            	el: '#kurekureForm',
+            	collection: todoList
+            });
 
 
-	//ダミーデータ
-	todos.add({
-		kurekure: 'ああああああああ'
-	}, { validate: true })
+            this.todoListView =  new TodoListView({
+            	el: "#todo-list > ul",
+            	collection: todoList
+            });
 
-	//test
-	var Users = Backbone.Collection.extend({
-		model: User,
-		url: 'data.json'
-	});
-
-	var UserView = Backbone.View.extend({
-		el: $('#view'),
-		initialize: function(){
-			this.collection = new Users();
-			this.collection.fetch({
-				error: $.proxy(this.error, this),
-				success: $.proxy(this.render, this)
-			});
-		},
-		render: function(){
-			_(this.collection.models).each(function(item){
-					
-			}, this);
-		}
-	});
-
-
-
+            this.render();
+          }, this)
+		});
+	},
+	render: function(){
+        this.todoListView.render();
+        return this;
+	}
 });
+
+var appView = new AppView();
