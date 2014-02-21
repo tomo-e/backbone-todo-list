@@ -418,11 +418,11 @@ ul {
  * app **
 ---------------------------------------- */
 
-.todoList li:first-of-type {
+.wishlist li:first-of-type {
   border-top: 1px solid #e56;
 }
 
-#todo-list li {
+.wishlist li {
   padding: 5px 10px;
   background: #e98;
   border-bottom: 1px solid #e56;

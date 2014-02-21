@@ -1,29 +1,30 @@
-Parse.initialize("XXXXXXXXXXXXXXXXXXXX", "XXXXXXXXXXXXXXXXXXXX");
+Parse.initialize("xxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxx");
 
 var AppView = Parse.View.extend({
-  initialize: function(){
-    new Parse.Query("Todo").find({
-      success: _.bind(function(list){
-        var todoList = new TodoList(list);
+ initialize: function(){
+    new Parse.Query("WishList").find({
+          success: _.bind(function(list){
 
-        var createFormView = new appCreateFormView({
-          el: '#kurekureForm',
-          collection: todoList
-        });
+            var wishLists = new WishLists(list);
 
-        this.todoListView =  new TodoListView({
-          el: "#todo-list > ul",
-          collection: todoList
-        });
+            var createFormView = new AppCreateFormView({
+             el: '#wishListForm',
+             collection: wishLists
+            });
 
-        this.render();
-      }, this)
-    });
-	},
-  render: function(){
-    this.todoListView.render();
-    return this;
-  }
+
+            this.todoListView =  new AppWishListView({
+             el: "#_wishList > ul",
+             collection: wishLists
+            });
+
+            this.render();
+          }, this)
+   });
+ },
+ render: function(){
+        this.todoListView.render();
+        return this;
+ }
 });
-
 var appView = new AppView();
