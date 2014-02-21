@@ -1,53 +1,30 @@
-//Parse.initialize("XdVAwqKh70w9UMkOdZ6DtARG6RoeJCWvKN7fXCu1", "1h09oS4OraHlIBTPOSXyknitPkexsgWfvfMfWqno");
+Parse.initialize("xxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxx");
+
+var AppView = Parse.View.extend({
+ initialize: function(){
+    new Parse.Query("WishList").find({
+          success: _.bind(function(list){
+
+            var wishLists = new WishLists(list);
+
+            var createFormView = new AppCreateFormView({
+             el: '#wishListForm',
+             collection: wishLists
+            });
 
 
+            this.todoListView =  new AppWishListView({
+             el: "#_wishList > ul",
+             collection: wishLists
+            });
 
-
-
-
-$(function() {
-  var wishList = new AppWishList();
-
-  wishList.set({
-    'title': 'ほしいもの',
-  });
-
-  $('body').html(
-    wishList.get('title')
-  );
+            this.render();
+          }, this)
+   });
+ },
+ render: function(){
+        this.todoListView.render();
+        return this;
+ }
 });
-
-
-
-
-
-
-// var AppView = Parse.View.extend({
-// 	initialize: function(){
-// 		 new Parse.Query("Todo").find({
-//           success: _.bind(function(list){
-
-//             var todoList = new TodoList(list);
-
-//             var createFormView = new appCreateFormView({
-//             	el: '#kurekureForm',
-//             	collection: todoList
-//             });
-
-
-//             this.todoListView =  new TodoListView({
-//             	el: "#todo-list > ul",
-//             	collection: todoList
-//             });
-
-//             this.render();
-//           }, this)
-// 		});
-// 	},
-// 	render: function(){
-//         this.todoListView.render();
-//         return this;
-// 	}
-// });
-
-// var appView = new AppView();
+var appView = new AppView();
