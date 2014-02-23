@@ -2,19 +2,19 @@ Parse.initialize("xxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxx");
 
 var AppView = Parse.View.extend({
   initialize: function(){
-    new Parse.Query("WishList").find({
+    new Parse.Query("WishItem").find({
       success: _.bind(function(list){
 
-        var wishLists = new WishLists(list);
+        var wishList = new WishList(list);
 
         var createFormView = new AppCreateFormView({
           el: '#wishListForm',
-          collection: wishLists
+          collection: wishList
         });
 
         this.todoListView =  new AppWishListView({
           el: "#_wishList > ul",
-          collection: wishLists
+          collection: wishList
         });
 
         this.render();

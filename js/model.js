@@ -1,5 +1,5 @@
-var WishList = Parse.Object.extend({
-  className:"WishList",
+var WishItem = Parse.Object.extend({
+  className:"WishItem",
   validate: function(attrs){
     if(_.isEmpty(attrs.title)){
       return "おみやげ名は必須です";
@@ -7,6 +7,6 @@ var WishList = Parse.Object.extend({
   }
 });
 
-var WishLists = Parse.Collection.extend({
-  model: WishList
+var WishList = Parse.Collection.extend({
+  model: WishItem
 });

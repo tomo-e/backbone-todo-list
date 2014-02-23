@@ -7,22 +7,22 @@ var AppCreateFormView = Parse.View.extend({
   onSubmit: function(e) {
     e.preventDefault();
 
-    var wishlist = new WishList();
+    var wishItem = new WishItem();
 
-    wishlist.on('error', function(model, error) {
+    wishItem.on('error', function(model, error) {
       $('#_error').html(error);
     });
 
-    wishlist.set({
+    wishItem.set({
       title: $('#title').val()
     })
 
-    if(wishlist.isValid()) {
+    if(wishItem.isValid()) {
       $('#_error').html('');
 
-      wishlist.save(null, {
-        success: _.bind(function(wishlist) {
-          this.collection.add(wishlist);
+      wishItem.save(null, {
+        success: _.bind(function(wishItem) {
+          this.collection.add(wishItem);
           $('#title').val('');
         }, this)
       });
