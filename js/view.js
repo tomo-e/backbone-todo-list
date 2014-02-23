@@ -9,13 +9,17 @@ var AppCreateFormView = Parse.View.extend({
 
     var wishlist = new WishList();
 
-    wishlist.on('error', function(model, error) {$('#_error').html(error);});
+    wishlist.on('error', function(model, error) {
+      $('#_error').html(error);
+    });
+
     wishlist.set({
       title: $('#title').val()
     })
 
     if(wishlist.isValid()) {
       $('#_error').html('');
+
       wishlist.save(null, {
         success: _.bind(function(wishlist) {
           this.collection.add(wishlist);
@@ -31,15 +35,17 @@ var AppWishListView = Parse.View.extend({
   initialize: function() {
     this.render();
     this.collection.on("add remove", this.render, this);
-    //this.listenTo(this.collection, 'add　remove', this.render);
   },
   render: function() {
-   this.$el.html("");
+    this.$el.html("");
 
     this.collection.each(function(model) {
-      var item = new AppWishListItemView({model: model});
+      var item = new AppWishListItemView({
+        model: model
+      });
+      
       this.$el.append(item.render().el);
-    },this);
+    }, this);
   }
 });
 
@@ -48,8 +54,6 @@ var AppWishListItemView = Parse.View.extend({
   tagName: "li",
 
   template: _.template('<%= title %>' + '<span class="remove">delete</span>'),
-  // template:
-  //   '<%= title %>' + '<span class="remove">delete</span>',
 
   events: {
     'click .remove': 'onRemove'
@@ -61,10 +65,7 @@ var AppWishListItemView = Parse.View.extend({
 
   render: function(){
     this.$el.html(this.template(this.model.toJSON()));
-    return this;         
-    // var html = _.template(this.template, {
-    //  title: this.model.toJSON()
-    // });
+    return this;
   },
 
   onRemove: function() {
